@@ -13,6 +13,9 @@ dependencies:
   '@capacitor/keyboard':
     specifier: 5.0.6
     version: 5.0.6(@capacitor/core@5.5.1)
+  '@capacitor/live-updates':
+    specifier: 0.1.1-beta.4
+    version: 0.1.1-beta.4(@capacitor/core@5.5.1)
   '@capacitor/status-bar':
     specifier: 5.0.6
     version: 5.0.6(@capacitor/core@5.5.1)
@@ -60,6 +63,9 @@ devDependencies:
   '@testing-library/user-event':
     specifier: ^14.4.3
     version: 14.4.3(@testing-library/dom@7.21.4)
+  '@types/jest':
+    specifier: ^29.5.11
+    version: 29.5.11
   '@types/react':
     specifier: ^18.0.27
     version: 18.0.27
@@ -1364,6 +1370,14 @@ packages:
       '@capacitor/core': 5.5.1
     dev: false
 
+  /@capacitor/live-updates@0.1.1-beta.4(@capacitor/core@5.5.1):
+    resolution: {integrity: sha512-aeI4rbdz8y5VjrP9JBSioEsQnoT08yogpp7nwO0hAZmXGn56JiqCJ4EW5d3tYw5Xl04BTw+xugJiIi2VUfzNlw==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 5.5.1
+    dev: false
+
   /@capacitor/status-bar@5.0.6(@capacitor/core@5.5.1):
     resolution: {integrity: sha512-7od8CxsBnot1XMK3IeOkproFL4hgoKoWAc3pwUvmDOkQsXoxwQm4SR9mLwQavv1XfxtHbFV9Ukd7FwMxOPSViw==}
     peerDependencies:
@@ -2208,7 +2222,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 18.19.3
+      '@types/node': 20.10.4
     dev: true
     optional: true
 
