@@ -1,0 +1,8 @@
+{
+  "name": "react-asset-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "f0ddf5df"
+}
