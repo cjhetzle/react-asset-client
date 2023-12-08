@@ -7,13 +7,13 @@ import { useState } from 'react';
 
 
 
-
 const Page: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
+  let hostname: String = import.meta.env.VITE_HSB_URL;
 
   async function getAssetCount(): Promise<number> {
-    return await fetch('http://localhost:8000/assets')
+    return await fetch(hostname + '/assets')
       .then(response => response.json())
       .then(data => { return data.length }).catch(e => {
         console.error(e);
@@ -22,12 +22,12 @@ const Page: React.FC = () => {
   }
 
   async function getAssets(): Promise<any> {
-    return await fetch('http://localhost:8000/assets')
+    return await fetch(hostname + '/assets')
       .then(response => response.json()).then(data => { return data });
   }
 
   async function promoteAsset(id: number) {
-    await fetch('http://localhost:8000/assets/' + id, {method:"post", headers: {
+    await fetch(hostname + '/assets/' + id, {method:"post", headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }})
