@@ -13,7 +13,7 @@ const Page: React.FC = () => {
   const { name } = useParams<{ name: string; }>();
 
   async function getAssetCount(): Promise<number> {
-    return await fetch('https://hsb.cjhetz.dev/assets')
+    return await fetch('http://localhost:8000/assets')
       .then(response => response.json())
       .then(data => { return data.length }).catch(e => {
         console.error(e);
@@ -22,8 +22,15 @@ const Page: React.FC = () => {
   }
 
   async function getAssets(): Promise<any> {
-    return await fetch('https://hsb.cjhetz.dev/assets')
+    return await fetch('http://localhost:8000/assets')
       .then(response => response.json()).then(data => { return data });
+  }
+
+  async function promoteAsset(id: number) {
+    await fetch('http://localhost:8000/assets/' + id, {method:"post", headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }})
   }
 
   const [assetCount, setCount] = useState(0);
@@ -57,7 +64,9 @@ const Page: React.FC = () => {
           console.log(value);
           return (
             <IonItem key={index}>
-              <IonTitle>{value["id"] + value["name"] + ' ' + value["isPromoted"]}</IonTitle>
+              <IonButton onClick={ () => {promoteAsset(value["id"]).then(() => getAssets().then(data => { console.log('c' + data); setAssets(data) }))}}>
+                <IonTitle>{value["id"] + value["name"] + ' ' + value["isPromoted"]}</IonTitle>
+              </IonButton>
             </IonItem>
           )
         })}

@@ -1,0 +1,16 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8100'
+  
+  proxy:
+    image: nginx:stable-alpine-slim
+    ports:
+      - '80:80'
+    depends_on:
+      - web
+    volumes:
+      - ./resources/nginx-default.conf:/etc/nginx/conf.d/default.conf
