@@ -1,0 +1,18 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: DockerfileProd
+    ports:
+      - '80'
+    environment:
+      VITE_REST_URL: http://localhost:8000
+  
+  proxy:
+    image: nginx:stable-alpine-slim
+    ports:
+      - '80:80'
+    depends_on:
+      - web
+    volumes:
+      - ./resources/nginx-prd.conf:/etc/nginx/conf.d/default.conf
