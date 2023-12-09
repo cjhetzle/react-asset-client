@@ -41,4 +41,4 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Start Garbage Collection
-        run: doctl registry garbage-collection start react-asset-client-web -f  
+        run: doctl registry garbage-collection start ${{ vars.DIGITALOCEAN_CONTAINER_REGISTRY }} -f  
