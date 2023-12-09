@@ -3,4 +3,5 @@ COPY . /
 RUN npm install
 RUN npm run build
 FROM httpd:2.4 as http-servlet
+EXPOSE 80
 COPY --from=npm-builder /dist/ /usr/local/apache2/htdocs/
