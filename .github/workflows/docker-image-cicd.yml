@@ -1,0 +1,32 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout from Github 🥚
+      uses: actions/checkout@v3
+    
+    - name: GitHub Action for DigitalOcean - doctl 🌊
+      uses: digitalocean/action-doctl@v2.5.0
+      with:
+        token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+    
+    - name: Authenticate to DigitalOcean 🔐
+      run: doctl registry login --expiry-seconds 600
+
+    - name: Build and push image 🏗
+      run: |-
+        docker build . --file DockerfileProd --tag ${{ vars.DOCKER_IMAGE }} &&
+        docker tag ${{ vars.DOCKER_IMAGE }} registry.digitalocean.com/${{ vars.DIGITALOCEAN_CONTAINER_REGISTRY }}/${{ vars.DOCKER_IMAGE }} &&
+        docker push registry.digitalocean.com/${{ vars.DIGITALOCEAN_CONTAINER_REGISTRY }}/${{ vars.DOCKER_IMAGE }}
