@@ -10,7 +10,7 @@ import { useState } from 'react';
 const Page: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
-  let hostname: String = import.meta.env.VITE_HSB_URL;
+  let hostname: String = import.meta.env.VITE_REST_URL;
 
   async function getAssetCount(): Promise<number> {
     return await fetch(hostname + '/assets')
