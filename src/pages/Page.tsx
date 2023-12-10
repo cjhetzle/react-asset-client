@@ -58,7 +58,7 @@ const Page: React.FC = () => {
           Here
         </IonButton> */}
         <IonButton onClick={() => { getAssets().then(data => { console.log('c' + data); setAssets(data) }).catch(e => console.log(e)) }} shape='round'>
-          Here
+          Refresh
         </IonButton>
         <IonList>
           <IonItem>
@@ -69,14 +69,19 @@ const Page: React.FC = () => {
           </IonItem>
         </IonList>
         <IonList>
-          {assetArray.map((value, index) => {
+          {assetArray.sort((a, b) => (a as Asset).id - (b as Asset).id)
+          .map((value, index) => {
             console.log(value);
             let asset = value as Asset;
             return (
               <IonItem key={index}>
                 <IonButton  onClick={() => { promoteAsset(value["id"]).then(() => getAssets().then(data => { console.log('c' + data); setAssets(data) })) }}>
-                  <IonTitle>{asset.id + asset.name + ' ' + asset.isPromoted}</IonTitle>
+                  Promote
                 </IonButton>
+                <IonTitle>{asset.name}</IonTitle>
+                <IonTitle>{'id: ' + asset.id}</IonTitle>
+                <IonTitle>{(asset.parentAsset === null) ? '': 'child of: ' + asset.parentAsset}</IonTitle>
+                <IonTitle>{'promoted: ' + asset.isPromoted}</IonTitle>
               </IonItem>
             )
           })}
