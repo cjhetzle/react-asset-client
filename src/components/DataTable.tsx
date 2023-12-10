@@ -1,6 +1,7 @@
-import { IonButton, IonContent, IonItem, IonList, IonPopover, IonProgressBar, IonTitle } from "@ionic/react"
+import { IonButton, IonButtons, IonContent, IonHeader, IonItem, IonList, IonModal, IonPopover, IonProgressBar, IonTitle, IonToolbar } from "@ionic/react"
 import Asset from "../Asset";
 import { useState } from "react";
+import InsertForm from "./InsertForm";
 
 const DataTable: React.FC = () => {
 
@@ -41,6 +42,7 @@ const DataTable: React.FC = () => {
 
     const [assetCount, setCount] = useState(0);
     const [assetArray, setAssets] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <IonContent>
@@ -48,9 +50,20 @@ const DataTable: React.FC = () => {
                 <IonButton onClick={() => { getAssets().then(data => { console.log('c' + data); setAssets(data); setCount(data.length); }).catch(e => console.log(e)) }} shape='round'>
                     Refresh
                 </IonButton>
-                <IonButton shape='round'>
+                <IonButton shape='round' onClick={() => setIsOpen(true)}>
                     Insert
                 </IonButton>
+                <IonModal isOpen={isOpen}>
+                    <IonHeader>
+                        <IonToolbar>
+                            <IonTitle>Insert Form</IonTitle>
+                            <IonButtons slot="end">
+                                <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+                            </IonButtons>
+                        </IonToolbar>
+                    </IonHeader>
+                    <InsertForm/>
+                </IonModal>
                 <IonTitle slot="end">{'Count = ' + assetCount}</IonTitle>
             </IonItem>
             <IonList>
@@ -63,9 +76,9 @@ const DataTable: React.FC = () => {
                                 <IonButton onClick={() => { promoteAsset(asset.id).then(() => getAssets().then(data => { console.log('c' + data); setAssets(data) })) }}>
                                     Promote
                                 </IonButton>
-                                
-                                <IonButton id={'click-trigger-'+asset.id}>{asset.name}</IonButton>
-                                <IonPopover trigger={'click-trigger-'+asset.id} triggerAction="click">
+
+                                <IonButton id={'click-trigger-' + asset.id}>{asset.name}</IonButton>
+                                <IonPopover trigger={'click-trigger-' + asset.id} triggerAction="click">
                                     <IonContent>{'id: ' + asset.id}</IonContent>
                                     <IonContent class="ion-padding">{(asset.parentAsset === null) ? '' : 'child of: ' + asset.parentAsset}</IonContent>
                                 </IonPopover>
