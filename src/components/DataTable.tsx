@@ -1,4 +1,4 @@
-import { IonButton, IonItem, IonList, IonProgressBar, IonTitle } from "@ionic/react"
+import { IonButton, IonContent, IonItem, IonList, IonPopover, IonProgressBar, IonTitle } from "@ionic/react"
 import Asset from "../Asset";
 import { useState } from "react";
 
@@ -43,14 +43,15 @@ const DataTable: React.FC = () => {
     const [assetArray, setAssets] = useState([]);
 
     return (
-        <IonItem>
+        <IonContent>
             <IonItem>
-                <IonButton onClick={() => { getAssets().then(data => { console.log('c' + data); setAssets(data) }).catch(e => console.log(e)) }} shape='round'>
+                <IonButton onClick={() => { getAssets().then(data => { console.log('c' + data); setAssets(data); setCount(data.length); }).catch(e => console.log(e)) }} shape='round'>
                     Refresh
                 </IonButton>
                 <IonButton shape='round'>
                     Insert
                 </IonButton>
+                <IonTitle slot="end">{'Count = ' + assetCount}</IonTitle>
             </IonItem>
             <IonList>
                 {assetArray.sort((a, b) => (a as Asset).id - (b as Asset).id)
@@ -62,18 +63,24 @@ const DataTable: React.FC = () => {
                                 <IonButton onClick={() => { promoteAsset(asset.id).then(() => getAssets().then(data => { console.log('c' + data); setAssets(data) })) }}>
                                     Promote
                                 </IonButton>
-                                <IonTitle>{asset.name}</IonTitle>
-                                <IonTitle>{'id: ' + asset.id}</IonTitle>
-                                <IonTitle>{(asset.parentAsset === null) ? '' : 'child of: ' + asset.parentAsset}</IonTitle>
-                                <IonTitle>{'promoted: ' + asset.isPromoted}</IonTitle>
+                                
+                                <IonButton id={'click-trigger-'+asset.id}>{asset.name}</IonButton>
+                                <IonPopover trigger={'click-trigger-'+asset.id} triggerAction="click">
+                                    <IonContent>{'id: ' + asset.id}</IonContent>
+                                    <IonContent class="ion-padding">{(asset.parentAsset === null) ? '' : 'child of: ' + asset.parentAsset}</IonContent>
+                                </IonPopover>
+
+
+                                <IonContent>{'promoted: ' + asset.isPromoted}</IonContent>
                                 <IonButton onClick={() => deleteAsset(asset.id).then(() => getAssets().then(data => { setAssets(data) }))}>
                                     X
                                 </IonButton>
                             </IonItem>
+
                         )
                     })}
             </IonList>
-        </IonItem>)
+        </IonContent>)
 };
 
 export default DataTable;
