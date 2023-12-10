@@ -1,9 +1,10 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonItem, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonList, IonMenuButton, IonPage, IonProgressBar, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
 import ExploreContainer from '../components/ExploreContainer';
 import './Page.css';
 import Menu from '../components/Menu';
 import { useState } from 'react';
+import Asset from '../Asset';
 
 
 
@@ -22,15 +23,18 @@ const Page: React.FC = () => {
   }
 
   async function getAssets(): Promise<any> {
+    <IonProgressBar type="indeterminate"></IonProgressBar>
     return await fetch(hostname + '/assets')
       .then(response => response.json()).then(data => { return data });
   }
 
   async function promoteAsset(id: number) {
-    await fetch(hostname + '/assets/' + id, {method:"post", headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }})
+    await fetch(hostname + '/assets/' + id, {
+      method: "post", headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
   }
 
   const [assetCount, setCount] = useState(0);
@@ -40,9 +44,6 @@ const Page: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -51,24 +52,35 @@ const Page: React.FC = () => {
           <IonToolbar>
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
+          
         </IonHeader>
-        <IonButton onClick={() => { getAssetCount().then(data => { console.log('c' + data); setCount(data) }) }}>
+        {/* <IonButton onClick={() => { getAssetCount().then(data => { console.log('c' + data); setCount(data) }) }}>
+          Here
+        </IonButton> */}
+        <IonButton onClick={() => { getAssets().then(data => { console.log('c' + data); setAssets(data) }).catch(e => console.log(e)) }} shape='round'>
           Here
         </IonButton>
-        <IonTitle>{assetCount}</IonTitle>
-        <IonButton onClick={() => { getAssets().then(data => { console.log('c' + data); setAssets(data) }).catch(e => console.log(e)) }}>
-          Here
-        </IonButton>
-        {assetArray.map((value, index) => {
-          console.log(value);
-          return (
-            <IonItem key={index}>
-              <IonButton onClick={ () => {promoteAsset(value["id"]).then(() => getAssets().then(data => { console.log('c' + data); setAssets(data) }))}}>
-                <IonTitle>{value["id"] + value["name"] + ' ' + value["isPromoted"]}</IonTitle>
-              </IonButton>
-            </IonItem>
-          )
-        })}
+        <IonList>
+          <IonItem>
+            <IonInput label="Name"></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonInput label="Parent" type='number'></IonInput>
+          </IonItem>
+        </IonList>
+        <IonList>
+          {assetArray.map((value, index) => {
+            console.log(value);
+            let asset = value as Asset;
+            return (
+              <IonItem key={index}>
+                <IonButton  onClick={() => { promoteAsset(value["id"]).then(() => getAssets().then(data => { console.log('c' + data); setAssets(data) })) }}>
+                  <IonTitle>{asset.id + asset.name + ' ' + asset.isPromoted}</IonTitle>
+                </IonButton>
+              </IonItem>
+            )
+          })}
+        </IonList>
       </IonContent>
     </IonPage>
   );
